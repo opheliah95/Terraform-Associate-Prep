@@ -30,3 +30,16 @@ variable "public_subnets" {
     "public_subnet_3" = 3
   }
 }
+
+# cidr new bits, new bits + netnum is final network mask
+variable "cidr_newbits" {
+  default = 8
+  description = "newbits for cidr"
+  type = number
+}
+
+variable "cidr_netnum" {
+  default = 1
+  description = "netnum for cidr, no more than new bits"
+  type = number
+}

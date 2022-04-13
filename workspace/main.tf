@@ -22,4 +22,10 @@ resource "aws_vpc" "my-vpc" {
   }
 }
 
+# setup private subnets
+resource "aws_subnet" "private_subnet"{
+  for_each = var.private_subnet
+  vpc_id = aws_vpc.my-vpc
+  cidr_block = cidrsubnet(var.vpc_cidr, each.value)
+}
 
