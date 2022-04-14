@@ -6,16 +6,21 @@ workspace="workspace" # default workspace value
 # assign default var file value if not exist already
 terraform_var_file="aws.tfvars"
 
-while getopts "w:p:vf" arg; do
+while getopts "wp" arg; do
   case $arg in
-    -w|--workspace) 
+    w|--workspace) 
+        echo $arg ${OPTARG}
         workspace=$OPTARG;;
-    -p|--pwd)
+    p|--pwd)
         current_dir=$OPTARG;;
     -vf|--var-file)
         terraform_var_file="${$OPTARG:-aws.tfvars}";;
     *)
-        echo $1 is not a valid argument
+        error="$1 is not a valid argument.\
+                script usage: \
+                [-w somevalue] [-p somevalue] [-vf somevalue]"
+        echo $error
+        exit ;;
 
   esac
 done
