@@ -81,7 +81,7 @@ data "aws_ami" "ubuntu" {
 # terraform create an ec2 instance
 resource "aws_instance" "web_server" {
   instance_type = var.instance_type
-  ami           = data.aws_ami.ubuntu
+  ami           = data.aws_ami.ubuntu.id # require id of ami a string var
   tags = {
     Name      = "my ubuntu ec2 web server"
     Terraform = "true"
