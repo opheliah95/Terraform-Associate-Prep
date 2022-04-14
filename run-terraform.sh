@@ -1,13 +1,31 @@
 #!/bin/bash
 
 # current file path for this repo
-workspace="workspace"
-[[ $PWD == *"$workspace"* ]] \
+workspace="workspace" # default workspace value
+
+# assign default var file value if not exist already
+terraform_var_file="aws.tfvars"
+
+while getopts "w:p:vf" arg; do
+  case $arg in
+    -w|--workspace) 
+        workspace=$OPTARG;;
+    -p|--pwd)
+        current_dir=$OPTARG;;
+    -vf|--var-file)
+        terraform_var_file="${$OPTARG:-aws.tfvars}";;
+    *)
+        echo $1 is not a valid argument
+
+  esac
+done
+
+# do not attach multipe workspace path
+[[ $PWD == *"${workspace}"* ]] \
     && current_dir=$PWD \
     || current_dir=$PWD/${workspace}
 
-# assign default var file value if not exist already
-terraform_var_file="${1:-aws.tfvars}"
+
 
 # some debug to test if the resoruces exist
 echo "current directory is ${current_dir}"
