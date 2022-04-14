@@ -4,7 +4,7 @@
 current_dir=$PWD/workspace
 
 # assign default var file value if not exist already
-terraform_var_file= ${[ -z "$1" ] && "aws.tfvars"}
+terraform_var_file="${1:-aws.tfvars}"
 
 # some debug to test if the resoruces exist
 echo "current directory is ${current_dir}"
