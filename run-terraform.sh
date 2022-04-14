@@ -21,3 +21,9 @@ function show_terraform(){
     cd ${current_dir}
     terraform show
 }
+
+# exec terraform show function in dir with terraform
+function destroy_terraform(){
+    cd ${current_dir}
+    terraform destroy --var-file=${terraform_var_file} --auto-approve
+}
