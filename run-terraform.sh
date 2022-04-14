@@ -25,8 +25,14 @@ function terraform_show(){
     terraform show
 }
 
-# exec terraform show function in dir with terraform
+# exec terraform destroy 
 function terraform_destroy(){
     cd ${current_dir}
     terraform destroy --var-file=${terraform_var_file} --auto-approve
+}
+
+# exec terraform plan to show update
+function terraform_plan(){
+    cd ${current_dir}
+    terraform plan --var-file=${terraform_var_file} 
 }
