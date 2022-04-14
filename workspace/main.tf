@@ -50,3 +50,16 @@ resource "aws_subnet" "public_subnets" {
   }
 }
 
+# create internet gateway to enable public subnet access
+resource "aws_internet_gateway" "internet_gw" {
+  vpc_id = aws_vpc.my-vpc.id
+
+  # only create the gw when there is vpc
+  depends_on = [
+    aws_vpc.my-vpc
+  ]
+  tags = {
+    Name      = "public internet gateway"
+    Terraform = "true"
+  }
+}
