@@ -82,6 +82,7 @@ data "aws_ami" "ubuntu" {
 resource "aws_instance" "web_server" {
   instance_type = var.instance_type
   ami           = data.aws_ami.ubuntu.id # require id of ami a string var
+  subnet_id = aws_subnet.public_subnets["public_subnet_1"].id # need a vpc/subnet id
   tags = {
     Name      = "my ubuntu ec2 web server"
     Terraform = "true"
