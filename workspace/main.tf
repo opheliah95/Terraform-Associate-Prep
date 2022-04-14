@@ -63,3 +63,28 @@ resource "aws_internet_gateway" "internet_gw" {
     Terraform = "true"
   }
 }
+
+# ec2 instance type with ami lookup
+data "aws_ami" "ubuntu" {
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"]
+  }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+  owners = ["099720109477"]
+}
+
+# terraform create an ec2 instance
+resource "aws_instance" "web_server" {
+  instance_type = var.instance_type
+  ami           = data.aws_ami.ubuntu
+  tags = {
+    Name      = "my ubuntu ec2 web server"
+    Terraform = "true"
+  }
+
+}
