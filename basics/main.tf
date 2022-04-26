@@ -84,6 +84,26 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+# create aws routing table
+resource "aws_route_table" "my_routing_table" {
+  vpc_id = aws_vpc.main.id
+
+  route {
+    cidr_block = "10.0.0.0/12"
+    gateway_id = aws_internet_gateway.gw.id
+  }
+  tags = {
+    Name = "my_routing_table"
+  }
+}
+
+# associate route table to aws subet
+# so this is a public subnet
+resource "aws_route_table_association" "association" {
+  subnet_id      = aws_subnet.main.id
+  route_table_id = aws_route_table.my_routing_table.id
+}
+
 # aws ec2 instance
 resource "aws_instance" "web" {
   ami           = data.aws_ami.ubuntu.id
