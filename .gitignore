@@ -30,3 +30,4 @@ override.tf.json
 **.tfvars
 .env
 **plan
+**pem

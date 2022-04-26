@@ -31,6 +31,42 @@ resource "aws_internet_gateway" "gw" {
   }
 }
 
+# aws security group
+resource "aws_security_group" "my_security_group" {
+  name        = "allow_tls"
+  description = "Allow TLS inbound traffic"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description      = "connection from http"
+    from_port        = 80
+    to_port          = 80
+    protocol         = "tcp"
+    cidr_blocks      = [aws_vpc.main.cidr_block]
+  }
+
+  ingress {
+    description      = "inbound connection from port 22"
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = [aws_vpc.main.cidr_block]
+  }
+
+
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "my_security_group"
+    Instance_Name="Terraform_EC2_Instance"
+  }
+}
+
 # aws data using a ubuntu image
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -53,6 +89,8 @@ resource "aws_instance" "web" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.main.id
+  security_groups = [aws_security_group.my_security_group.id]
+  key_name = "test"
   tags = {
     Name = "HelloWorld"
   }
