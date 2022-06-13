@@ -6,16 +6,19 @@ workspace="workspace" # default workspace value
 # assign default var file value if not exist already
 terraform_var_file="aws.tfvars"
 
+# source .env
+source .env
+
 while getopts ":w:p:f:" \
     arg; do
   case $arg in
-    w|--workspace) 
+    w) 
         echo "for workdir the arg is: $arg and the val is: $OPTARG"
         workspace=${OPTARG} ;;
-    p|--pwd)
+    p)
         echo "for pwd path the arg is: $arg and the val is: $OPTARG"
         current_dir=$OPTARG;;
-    f|--var-file)
+    f)
         echo "for var-files the arg is: $arg and the val is: $OPTARG"
         terraform_var_file="${OPTARG:-aws.tfvars}";;
     *)
@@ -47,7 +50,9 @@ function terraform_apply(){
 
 # exec terraform show function in dir with terraform
 function terraform_show(){
+    echo show all terraform infos: ${current_dir}
     cd ${current_dir}
+    echo current dir is $PWD
     terraform show
 }
 
